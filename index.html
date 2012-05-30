@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Detect Subpixel Font Rendering</title>
+
+	<style>
+		/* These styles are not part of the detection script. Only for visual feedback. */
+		.rotateme {
+			font: 16px arial;
+			-webkit-transform: rotate(-3deg);
+			-moz-transform: rotate(-3deg);
+			-o-transform: rotate(-3deg);
+			-ms-transform: rotate(-3deg);
+			transform: rotate(-3deg);
+		}
+	</style>
+
+</head>
+<body>
+
+<h1>Detect Subpixel Font Rendering</h1>
+
+<p class="rotateme">If DirectWrite or other subpixel font rendering routines are active in your current browser, an appropriate class has been added to the HTML element. Control the result by looking at this text. Is it really fucked up? Then you’ve got no subpixels!</p>
+
+
+<script>
+/*
+ * Test for sub-pixel font rendering support
+ * Authors: @derSchepp, @gerritvanaaken, @rodneyrehm, @yatil
+ */
+(function(window, document){
+	function testSubpixelFontRendering() {
+		var container = document.createElement('div'),
+			inner = document.createElement('div'),
+			width, hasSubpixelFontRendering;
+	
+		// style and content
+		container.style.cssText = 'position: absolute; top: -10em; visibility:hidden; font: normal 10px arial;';
+		inner.style.cssText = 'float: left; font-size: 33.3333%;';
+		inner.textContent = 'This is a text written in Arial';
+		
+		// add test <div>s to the DOM
+		container.appendChild(inner);
+		document.body.appendChild(container);
+
+		// get actual width of text
+		width = window.getComputedStyle 
+			? window.getComputedStyle(inner,null).getPropertyValue("width") 
+			: '44px',
+	
+		// map this to modernizr or something
+		hasSubpixelFontRendering = width !== '44px';
+	
+		// clean up
+		container.parentNode.removeChild(container);
+		
+		return hasSubpixelFontRendering;
+	}
+	
+	if (window.Modernizr) {
+		// http://modernizr.com/docs/#addtest
+		Modernizr.addTest('subpixelfont', testSubpixelFontRendering);
+	} else {
+		// no Modernizr fallback
+		document.documentElement.className += ' '
+			+ (!testSubpixelFontRendering() ? 'no-' : '')
+			+ 'subpixelfont';
+	}
+
+})(window, document);
+/* end of detection script */
+</script>
+
+</body>
+</html>
