@@ -14,14 +14,23 @@
 			-ms-transform: rotate(-3deg);
 			transform: rotate(-3deg);
 		}
+        .subpixelfont h2:after {
+            content: "smoothly with subpixels";
+        }
+        .no-subpixelfont h2:after {
+            content: "ugly without subpixels";
+        }   
+
 	</style>
 
 </head>
 <body>
 
-<h1>Detect Subpixel Font Rendering</h1>
+	<h1>Detect Subpixel Font Rendering</h1>
 
-<p class="rotateme">If DirectWrite or other subpixel font rendering routines are active in your current browser, an appropriate class has been added to the HTML element. Control the result by looking at this text. Is it really fucked up? Then you’ve got no subpixels!</p>
+	<h2>The text below should be rendered: </h2>
+
+	<p class="rotateme">If DirectWrite or other subpixel font rendering routines are active in your current browser, an appropriate class has been added to the HTML element. Control the result by looking at this text. Is it really fucked up? Then you’ve got no subpixels!</p>
 
 
 <script>
