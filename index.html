@@ -42,11 +42,14 @@
 	function testSubpixelFontRendering() {
 		var container = document.createElement('div'),
 			inner = document.createElement('div'),
+			// prevent scaling text on zoomed pages
+			// https://developer.mozilla.org/en/CSS/text-size-adjust
+			textSizeAdjust = ' -webkit-text-size-adjust: none; -moz-text-size-adjust: none; -ms-text-size-adjust: none; text-size-adjust: none;',
 			hasSubpixelFontRendering;
 	
 		// style and content
-		container.style.cssText = 'position: absolute; top: -10em; visibility:hidden; font: normal 10px arial;';
-		inner.style.cssText = 'float: left; font-size: 33.3333%;';
+		container.style.cssText = 'position: absolute; top: -10em; visibility:hidden; font: normal 10px arial;' + textSizeAdjust;
+		inner.style.cssText = 'float: left; font-size: 33.3333%;' + textSizeAdjust;
 		inner.textContent = 'This is a text written in Arial';
 		
 		// add test <div>s to the DOM
