@@ -48,8 +48,10 @@
 			hasSubpixelFontRendering;
 	
 		// style and content
-		container.style.cssText = 'position: absolute; top: -10em; visibility:hidden; font: normal 10px arial;' + textSizeAdjust;
-		inner.style.cssText = 'float: left; font-size: 33.3333%;' + textSizeAdjust;
+		container.style.cssText = ('position: absolute; top: -10em; visibility:hidden; font: normal 10px arial;' + textSizeAdjust)
+		    .replace(/;/g, ' !important;');
+		inner.style.cssText = ('float: left; font-size: 33.3333%;' + textSizeAdjust)
+		    .replace(/;/g, ' !important;');
 		inner.textContent = 'This is a text written in Arial';
 		
 		// add test <div>s to the DOM
@@ -62,7 +64,7 @@
 			: false;
 
 		// clean up
-		container.parentNode.removeChild(container);
+		//container.parentNode.removeChild(container);
 		
 		return hasSubpixelFontRendering;
 	}
