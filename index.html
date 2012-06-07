@@ -26,12 +26,13 @@
 </head>
 <body>
 
-	<h1>Detect Subpixel Font Rendering</h1>
+	<!--
+    <h1>Detect Subpixel Font Rendering</h1>
 
 	<h2>The text below should be rendered: </h2>
 
 	<p class="rotateme">If DirectWrite or other subpixel font rendering routines are active in your current browser, an appropriate class has been added to the HTML element. Control the result by looking at this text. Is it really fucked up? Then you’ve got no subpixels!</p>
-
+	-->
 
 <script>
 /*
@@ -44,27 +45,30 @@
 			inner = document.createElement('div'),
 			// prevent scaling text on zoomed pages
 			// https://developer.mozilla.org/en/CSS/text-size-adjust
-			textSizeAdjust = ' -webkit-text-size-adjust: none; -moz-text-size-adjust: none; -ms-text-size-adjust: none; text-size-adjust: none;',
-			hasSubpixelFontRendering;
+			textSizeAdjust = ' -webkit-text-size-adjust: none; -moz-text-size-adjust: none; -o-text-size-adjust: none; -ms-text-size-adjust: none; text-size-adjust: none;',
+			hasSubpixelFontRendering = false;
 	
 		// style and content
-		container.style.cssText = ('position: absolute; top: -10em; visibility:hidden; font: normal 10px arial;' + textSizeAdjust)
+		// 31px is a prime number that gets rounded to 30px in browsers w/o subpixel rendering
+		container.style.cssText = ('position: absolute; top: -10em; visibility: hidden; height: 30px; overflow: hidden; font: normal 31px arial;' + textSizeAdjust)
 		    .replace(/;/g, ' !important;');
-		inner.style.cssText = ('float: left; font-size: 33.3333%;' + textSizeAdjust)
+		inner.style.cssText = ('font-size: 33.3333%; line-height: 3;' + textSizeAdjust)
 		    .replace(/;/g, ' !important;');
-		inner.textContent = 'This is a text written in Arial';
+		inner.innerHTML = '&nbsp;';
 		
 		// add test <div>s to the DOM
 		container.appendChild(inner);
 		document.body.appendChild(container);
 
-		// determine width
-		hasSubpixelFontRendering = window.getComputedStyle 
-			? window.getComputedStyle(inner,null).getPropertyValue("width") !== '44px'
-			: false;
+		// check for lte IE8 and then for height differences
+		// !window.getComputedStyle = lte IE8
+		// if container.clientHeight < container.scrollHeight, subpixel = on
+		hasSubpixelFontRendering = window.getComputedStyle && container.clientHeight < container.scrollHeight ? true : false;
 
 		// clean up
 		//container.parentNode.removeChild(container);
+		
+		//alert(hasSubpixelFontRendering);
 		
 		return hasSubpixelFontRendering;
 	}
